@@ -110,14 +110,16 @@ Game.prototype.mouseClicked = function(evt){
         this.mouse.y = evt.clientY - rect.top
         var x = (this.mouse.x - (this.mouse.x % 100)) / 100;
         var y = (this.mouse.y - (this.mouse.y % 100)) / 100;
-        var piece = new createPiece(this.selectedPiece, y, x)
-        this.add(piece)
-        game.draw()
-        $("#card"+this.selectedPieceId).remove()
-        game.animate()
-        
-        pubnubSendMove({type:"move", intype:"place", str: this.selectedPiece, r: y, c: x})
-        this.selectedPiece = "unknown"
+        if(game.grid[y][x] == null){
+            var piece = new createPiece(this.selectedPiece, y, x)
+            this.add(piece)
+            game.draw()
+            $("#card"+this.selectedPieceId).remove()
+            game.animate()
+            
+            pubnubSendMove({type:"move", intype:"place", str: this.selectedPiece, r: y, c: x})
+            this.selectedPiece = "unknown"    
+        }
     }
 }
 
