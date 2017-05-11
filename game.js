@@ -22,8 +22,8 @@ function startGame(isX, myn, enemyn){
     document.getElementById("game").style.zIndex = 10;
     amX = isX;
     if(isX){
-        document.getElementById("playerInfo1").innerHTML = myn + "<br>$1000"
-        document.getElementById("playerInfo2").innerHTML = enemyn + "<br>$1000"
+        document.getElementById("playerInfo1").innerHTML = myn + "<br>$100"
+        document.getElementById("playerInfo2").innerHTML = enemyn + "<br>$100"
         document.getElementById("p2bet").disabled = true;
         document.getElementById("p2bet").type = "text";
         document.getElementById("p2bet").value = "?";
@@ -31,8 +31,8 @@ function startGame(isX, myn, enemyn){
         document.getElementById("cards2").style.visibility = "hidden";
     }
     else {
-        document.getElementById("playerInfo1").innerHTML = enemyn + "<br>$1000"
-        document.getElementById("playerInfo2").innerHTML = myn + "<br>$1000"
+        document.getElementById("playerInfo1").innerHTML = enemyn + "<br>$100"
+        document.getElementById("playerInfo2").innerHTML = myn + "<br>$100"
         document.getElementById("p1bet").disabled = true;
         document.getElementById("p1bet").type = "text";
         document.getElementById("p1bet").value = "?";
@@ -130,10 +130,8 @@ Game.prototype.add = function(piece){
 
 //Calls draw on all game pieces. Draws where the cursor is as well.
 Game.prototype.draw = function(showCursor){
-    document.getElementById("playerInfo" + this.myNumber).innerHTML = myName + "<br>$" + this.myMoney 
-    document.getElementById("playerInfo" + this.enemyNumber).innerHTML = enemyName + "<br>$" + this.enemyMoney 
     ctx.clearRect(0,0,500,500);
-    for(var i = 0; i < this.pieces.length; i++){
+    for(var i = 0; i < this.pieces.length; i++){    
         this.pieces[i].draw();
     }
     
@@ -213,22 +211,24 @@ Game.prototype.checkBetWinner = function(){
     this.haveRecievedEnemyBet = false
     this.havePlacedBet = false
     if(Number(this.myBet) > Number(this.enemyBet) || Number(this.myBet) === Number(this.enemyBet) && this.myType === "X"){
-        this.myMoney -= this.myBet
+        game.changeMyMoney(-1 * game.myBet)
         if($("#cards" + this.myNumber).children().length >= 3){
-             document.getElementById("currentinfo").innerHTML = "You've run out of space. You have not been given a card. Sorry, it's your fault for hoarding."
+             document.getElementById("currentinfo").innerHTML = "You've won this bid but run out of space."
              this.currentAction = "placingPiece"
-            this.selectedPiece = "unknown"
+             this.selectedPiece = "unknown"
+             document.getElementById("endTurn").style.visibility = "visible";
         }
         else {
-            document.getElementById("currentinfo").innerHTML = "You won this bet. Please play a piece."
+            document.getElementById("currentinfo").innerHTML = "You won this bid. Please play a piece."
             this.currentAction = "placingPiece"
             this.selectedPiece = "unknown"
             this.addCards()    
+            document.getElementById("endTurn").style.visibility = "visible";
         }
     }
     else {
-        this.enemyMoney -= this.enemyBet
-        document.getElementById("currentinfo").innerHTML = "You lost this bet. Waiting for other player to place his piece."
+        game.changeEnemyMoney(-1 * game.enemyBet)
+        document.getElementById("currentinfo").innerHTML = "You lost this bid. Waiting for other player to place his piece."
         this.currentAction = "waitingForPlacement"    
     }
     this.myBet = 0
@@ -239,12 +239,13 @@ Game.prototype.checkBetWinner = function(){
 
 Game.prototype.placeBet = function(){
     if(this.currentAction === "betting"){
-        var amount = document.getElementById("p" + this.myNumber + "bet").value
+        var amount = Math.floor(document.getElementById("p" + this.myNumber + "bet").value)
         if(amount <= this.myMoney && amount >= 0){
             pubnubSendMove({type: "move", intype: "bet", amount: amount});
             document.getElementById("p" + this.myNumber + "info").innerHTML = "Bet confirmed."
             this.currentAction = "waiting"
             document.getElementById("p" + game.myNumber + "bet").disabled = true;
+            document.getElementById("placeBet" + game.myNumber).style.visibility = "hidden";
             this.havePlacedBet = true;
             this.myBet = Number(amount);
             if(this.havePlacedBet && this.haveRecievedEnemyBet){
@@ -257,9 +258,56 @@ Game.prototype.placeBet = function(){
     }
 }
 
+Game.prototype.changeMyMoney = function(val){
+    var org = game.myMoney
+    game.myMoney += val
+    function iterate(){
+        if(game.myMoney != org){
+            document.getElementById("playerInfo" + game.myNumber).innerHTML = myName + "<br>$" + org
+            document.getElementById("playerInfo" + game.myNumber).style.fontSize = "35px"
+            if(org < game.myMoney){
+                org += 1
+            }
+            if(org > game.myMoney){
+                org -= 1
+            }
+            window.setTimeout(function(){iterate()},100)
+        }
+        else {
+             document.getElementById("playerInfo" + game.myNumber).innerHTML = myName + "<br>$" + game.myMoney
+             document.getElementById("playerInfo" + game.myNumber).style.fontSize = "25px"
+        }
+    }
+    iterate()
+}
+
+Game.prototype.changeEnemyMoney = function(val){
+    var org = game.enemyMoney
+    game.enemyMoney += val
+    function iterate(){
+        if(game.enemyMoney != org){
+            document.getElementById("playerInfo" + game.enemyNumber).innerHTML = enemyName + "<br>$" + org
+            document.getElementById("playerInfo" + game.enemyNumber).style.fontSize = "35px"
+            if(org < game.enemyMoney){
+                org++
+            }
+            if(org > game.enemyMoney){
+                org--
+            }
+            window.setTimeout(function(){iterate()},100)
+        }
+        else {
+             document.getElementById("playerInfo" + game.enemyNumber).innerHTML = enemyName + "<br>$" + game.enemyMoney
+             document.getElementById("playerInfo" + game.enemyNumber).style.fontSize = "25px"
+        }
+    }
+    iterate()
+}
+
 var moveReceived = function(move){
     if(move.intype == "bet"){
-        document.getElementById("p" + game.enemyNumber + "info").innerHTML = "Bet confirmed."
+        document.getElementById("p" + game.enemyNumber + "info").innerHTML = "Bid confirmed."
+        document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
          game.haveRecievedEnemyBet = true;
          game.enemyBet = Number(move.amount);
          if(game.havePlacedBet && game.haveRecievedEnemyBet){
@@ -274,12 +322,21 @@ var moveReceived = function(move){
     }
     if(move.intype == "endTurn"){
         game.currentAction = "betting"
+        document.getElementById("endTurn").style.visibility = "hidden";
+        document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
         document.getElementById("p" + game.enemyNumber + "bet").value = "?"
-        document.getElementById("currentinfo").innerHTML = "Betting Stage (Normal Piece)"
-        document.getElementById("p1info").innerHTML = "Waiting for bet..."
-        document.getElementById("p2info").innerHTML = "Waiting for bet..."
+        if(game.turns % 3 != 0){
+            document.getElementById("currentinfo").innerHTML = "Bidding Stage (Normal Piece)"
+        }
+        else {
+            document.getElementById("currentinfo").innerHTML = "Bidding Stage (BONUS PIECE)"
+        }
+        document.getElementById("p1info").innerHTML = "Waiting for bid..."
+        document.getElementById("p2info").innerHTML = "Waiting for bid..."
         document.getElementById("p" + game.myNumber + "bet").disabled = false;
+        game.changeMyMoney(5)
+        game.changeEnemyMoney(5)
         game.update()
         game.turns--
     }
@@ -289,12 +346,21 @@ function endTurn(){
     if(game.currentAction == "placingPiece"){
         pubnubSendMove({type: "move", intype: "endTurn"})
         game.currentAction = "betting"
+        document.getElementById("endTurn").style.visibility = "hidden";
+        document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
         document.getElementById("p" + game.enemyNumber + "bet").value = "?"
-        document.getElementById("currentinfo").innerHTML = "Betting Stage (Normal Piece)"
-        document.getElementById("p1info").innerHTML = "Waiting for bet..."
-        document.getElementById("p2info").innerHTML = "Waiting for bet..."
+        if(game.turns % 3 != 0){
+            document.getElementById("currentinfo").innerHTML = "Bidding Stage (Normal Piece)"
+        }
+        else {
+            document.getElementById("currentinfo").innerHTML = "Bidding Stage (BONUS PIECE)"
+        }
+        document.getElementById("p1info").innerHTML = "Waiting for bid..."
+        document.getElementById("p2info").innerHTML = "Waiting for bid..."
         document.getElementById("p" + game.myNumber + "bet").disabled = false;
+        game.changeMyMoney(5)
+        game.changeEnemyMoney(5)
         game.update()
         game.turns--
     }

@@ -170,6 +170,7 @@ table tr td {
 
 #endTurn {
     border: 2px solid white;
+    visibility: hidden;
 }
 
 #endTurn:hover {

@@ -205,10 +205,10 @@ MoneySmallPieceO.prototype.update = function(){
     var specs = this.drawSpecs;
     ctx.drawImage(specs.img, 24 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
     if(game.myType == "O"){
-        game.myMoney += 2
+        game.changeMyMoney(2)
     }
     else {
-        game.enemyMoney += 2
+        game.changeMyMoney(-2)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -223,10 +223,10 @@ MoneySmallPieceX.prototype.update = function(){
     var specs = this.drawSpecs;
     ctx.drawImage(specs.img, 24 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
     if(game.myType == "X"){
-        game.myMoney += 2
+        game.changeMyMoney(2)
     }
     else {
-        game.enemyMoney += 2
+        game.changeMyMoney(-2)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -245,10 +245,10 @@ MoneyMediumPieceO.prototype.update = function(){
     var specs = this.drawSpecs;
     ctx.drawImage(specs.img, 24 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
     if(game.myType == "O"){
-        game.myMoney += 5
+        game.changeMyMoney(5)
     }
     else {
-        game.enemyMoney += 5
+        game.changeMyMoney(-5)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -264,10 +264,10 @@ MoneyMediumPieceX.prototype.update = function(){
     var specs = this.drawSpecs;
     ctx.drawImage(specs.img, 24 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
     if(game.myType == "X"){
-        game.myMoney += 5
+        game.changeMyMoney(5)
     }
     else {
-        game.enemyMoney += 5
+        game.changeMyMoney(-5)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -286,10 +286,10 @@ MoneyLargePieceO.prototype.update = function(){
     var specs = this.drawSpecs;
     ctx.drawImage(specs.img, 24 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
     if(game.myType == "O"){
-        game.myMoney += 10
+        game.changeMyMoney(10)
     }
     else {
-        game.enemyMoney += 10
+        game.changeMyMoney(-10)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -304,10 +304,10 @@ MoneyLargePieceX.prototype.update = function(){
     var specs = this.drawSpecs;
     ctx.drawImage(specs.img, 24 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
     if(game.myType == "X"){
-        game.myMoney += 10
+        game.changeMyMoney(10)
     }
     else {
-        game.enemyMoney += 10
+        game.changeMyMoney(-10)
     }
     setTimeout(function(){game.draw()},200)
 }
