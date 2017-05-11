@@ -1,0 +1,315 @@
+body {
+    background-color: black;
+    margin: 0px;
+}
+#game {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: black;
+}
+
+#canvas {
+    border: 2px solid white;
+    width: 500px;
+    height: 500px;
+}
+
+table tr td {
+
+}
+
+#lobby {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 10;
+    background-color: black;
+    color: white;
+}
+
+#openGames{
+    border: 5px solid white;
+    width: 400px;
+    padding: 20px;
+    font-family: monospace;
+    font-size: 15px;
+}
+
+#openGames div:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+#createGame{
+    font-family: monospace;
+    color: black;
+    background-color: white;
+    width: 400px;
+    margin-top: 20px;
+    font-size: 50px;
+}
+
+#createGame:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#prompt {
+    display: table-cell;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    text-align: middle;
+}
+
+#prompt:active div{
+    background-color: white;
+}
+
+#prompt div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    border: 3px solid white;
+    background-color: black;
+    width: 200px;
+    padding: 10px;
+}
+
+#prompt div input {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+    font-family: monospace;
+}
+
+#prompt button {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+    font-family: monospace;
+}
+
+#gameLobby {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    position: absolute;
+    color: white;
+}
+
+#loading {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: monospace;
+    font-size: 70px;
+}
+
+#playerInfo1 {
+    color: white;
+    font-family: monospace;
+    padding: 10px;
+    font-size: 25px;
+}
+
+#playerInfo2 {
+    color: white;
+    font-family: monospace;
+    padding: 10px;
+    font-size: 25px;
+}
+
+table tr td {
+    text-align: center !important
+}
+
+#cards1, #cards2 {
+    color: white;
+    border: 3px solid white;
+    height: 350px;
+    min-width: 100px;
+    margin-right: 0px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#infotable {
+    color: white;
+    font-family: monospace;
+    font-size: 20px;
+}
+
+#infotable input {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+    font-family: monospace;
+    font-size: 26px;
+    width: 50px;
+}
+
+#p1info {
+    width: 250px;
+    height: 100px;
+}
+#p2info {
+    width: 250px;
+    height: 100px;
+}
+
+#currentinfo {
+    width: 200px;
+}
+
+#endTurn {
+    border: 2px solid white;
+}
+
+#endTurn:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+#placeBet1, #placeBet2 {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    font-family: monospace;
+    font-size: 26px;
+}
+
+#placeBet1:active {
+    background-color: white;
+}
+
+#placeBet2:active {
+    background-color: white;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+.card {
+    background-color: black;
+    width: 80px;
+    margin: 5px;
+    border: 5px solid black;
+    color: white;
+    font-family: monospace;
+    font-size: 40px;
+    height: 80px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card:hover {
+    border: 5px solid white;
+    cursor: pointer;
+    color: white;
+}
+
+.card {
+    background-size: cover;
+}
+
+.cardO {
+    background-image: url("images/o.png");
+}
+
+.cardX {
+    background-image: url("images/x.png");
+}
+
+.cardOBOMB {
+    background-image: url("images/obomb.png");
+}
+
+.cardXBOMB {
+    background-image: url("images/xbomb.png");
+}
+
+.cardODOUB {
+    background-image: url("images/odoub.png");
+}
+
+.cardXDOUB {
+    background-image: url("images/xdoub.png");
+}
+
+.cardOGRAB {
+    background-image: url("images/ograb.png");
+}
+
+.cardXGRAB {
+    background-image: url("images/xgrab.png");
+}
+
+.cardOHOR {
+    background-image: url("images/ohor.png");
+}
+
+.cardXHOR {
+    background-image: url("images/xhor.png");
+}
+
+.cardOMONL {
+    background-image: url("images/omonl.png");
+}
+
+.cardXMONL {
+    background-image: url("images/xmonl.png");
+}
+
+.cardOMONM {
+    background-image: url("images/omonm.png");
+}
+
+.cardXMONM {
+    background-image: url("images/xmonm.png");
+}
+
+.cardOMONS {
+    background-image: url("images/omons.png");
+}
+
+.cardXMONS {
+    background-image: url("images/xmons.png");
+}
+
+.cardONET {
+    background-image: url("images/onet.png");
+}
+
+.cardXNET {
+    background-image: url("images/xnet.png");
+}
+
+.cardOQUEST {
+    background-image: url("images/oquest.png");
+}
+
+.cardXQUEST {
+    background-image: url("images/xquest.png");
+}
+
+.cardOVERT {
+    background-image: url("images/overt.png");
+}
+
+.cardXVERT {
+    background-image: url("images/xovert.png");
+}

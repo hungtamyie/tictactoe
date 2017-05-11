@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<!--THIS IS REALLY INTENSE-->
+<!--THIS IS REALLY INTENSE-->
+<!--THIS IS REALLY INTENSE-->
+<!--THIS IS REALLY INTENSE-->
+<!--THIS IS REALLY INTENSE-->
+<html>
+    <head>
+        <title>INTENSE TIC TAC TOE</title>
+        
+        <link rel="stylesheet" type="text/css" href="style.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.8.0.js"></script>
+        <script src="game.js"></script>
+        <script src="pieces.js"></script>
+        <script src="server.js"></script>
+        <script src="input.js"></script>
+    </head>
+    <body> 
+        <center>
+            <div id="prompt">
+                <div>
+                    <p id="promptText" >Please enter your name.</p>
+                    <input id="promptInput" onkeydown = "if (event.keyCode == 13) document.getElementById('enterPrompt').click()" autofocus>
+                    <button onclick="promptEntered()" id="enterPrompt">></button>
+                </div>
+            </div>
+            <div id="lobby">
+                <div id="openGames">
+                </div>
+                <div id="createGame" onclick="createGame()">Create New Game</div>
+            </div>
+            <div id="gameLobby">
+                <div id="loading">Waiting for player 2...</div>
+            </div>
+            <div id="game">
+                  <table id="gametable">
+                      <tr>
+                          <td>
+                              <div id="playerInfo1">
+                                  Player 1
+                                  <br>
+                                  $100
+                              </div>
+                              <div id="cards1"></div>
+                          </td>
+                          <td>
+                              <canvas id="canvas" width="500px" height="500px"></canvas>
+                          </td>
+                          <td>
+                              <div id="playerInfo2">
+                                  Player 2
+                                  <br>
+                                  $100
+                              </div>
+                              <div id="cards2"></div>
+                          </td>
+                      </tr>
+                  </table>
+                  <table id="infotable">
+                      <tr>
+                          <td>
+                            <input type="number" onkeydown = "if (event.keyCode == 13) document.getElementById('placeBet1').click()" id="p1bet"><button id="placeBet1" onclick="placeBet()">Bet</button>
+                              <br>
+                              <div id="p1info">Waiting for bet...</div>
+                          </td>
+                          <td>
+                              <div id="endTurn" onclick="endTurn()">End Turn</div>
+                              <br>
+                              <div id="currentinfo">
+                                  Betting Stage (Normal Piece)
+                              </div>
+                          </td>
+                          <td>
+                              <input type="number" onkeydown = "if (event.keyCode == 13) document.getElementById('placeBet2').click()" id="p2bet" ><button id="placeBet2" onclick="placeBet()">Bet</button>
+                              <br>
+                              <div id="p2info">Waiting for bet...</div>
+                          </td>
+                    </tr>
+                  </table>
+            </div>
+        </center>
+    </body>
+</html>
