@@ -214,6 +214,8 @@ Game.prototype.checkBetWinner = function(){
         this.myMoney -= this.myBet
         if($("#cards" + this.myNumber).children().length >= 3){
              document.getElementById("currentinfo").innerHTML = "You've run out of space. You have not been given a card. Sorry, it's your fault for hoarding."
+             this.currentAction = "placingPiece"
+            this.selectedPiece = "unknown"
         }
         else {
             document.getElementById("currentinfo").innerHTML = "You won this bet. Please play a piece."
