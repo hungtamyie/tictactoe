@@ -208,7 +208,7 @@ MoneySmallPieceO.prototype.update = function(){
         game.changeMyMoney(2)
     }
     else {
-        game.changeMyMoney(-2)
+        game.changeEnemyMoney(2)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -226,7 +226,7 @@ MoneySmallPieceX.prototype.update = function(){
         game.changeMyMoney(2)
     }
     else {
-        game.changeMyMoney(-2)
+        game.changeEnemyMoney(2)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -248,7 +248,7 @@ MoneyMediumPieceO.prototype.update = function(){
         game.changeMyMoney(5)
     }
     else {
-        game.changeMyMoney(-5)
+        game.changeEnemyMoney(5)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -267,7 +267,7 @@ MoneyMediumPieceX.prototype.update = function(){
         game.changeMyMoney(5)
     }
     else {
-        game.changeMyMoney(-5)
+        game.changeEnemyMoney(5)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -289,7 +289,7 @@ MoneyLargePieceO.prototype.update = function(){
         game.changeMyMoney(10)
     }
     else {
-        game.changeMyMoney(-10)
+        game.changeEnemyMoney(10)
     }
     setTimeout(function(){game.draw()},200)
 }
@@ -307,7 +307,7 @@ MoneyLargePieceX.prototype.update = function(){
         game.changeMyMoney(10)
     }
     else {
-        game.changeMyMoney(-10)
+        game.changeEnemyMoney(10)
     }
     setTimeout(function(){game.draw()},200)
 }

@@ -326,7 +326,7 @@ var moveReceived = function(move){
         document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
         document.getElementById("p" + game.enemyNumber + "bet").value = "?"
-        if(game.turns % 3 != 0){
+        if(game.turns % 3 != 0 || game.turns === 0){
             document.getElementById("currentinfo").innerHTML = "Bidding Stage (Normal Piece)"
         }
         else {
@@ -350,7 +350,7 @@ function endTurn(){
         document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
         document.getElementById("p" + game.enemyNumber + "bet").value = "?"
-        if(game.turns % 3 != 0){
+        if(game.turns % 3 != 0 || game.turns === 0){
             document.getElementById("currentinfo").innerHTML = "Bidding Stage (Normal Piece)"
         }
         else {
