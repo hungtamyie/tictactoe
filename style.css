@@ -117,6 +117,7 @@ table tr td {
     font-family: monospace;
     padding: 10px;
     font-size: 25px;
+    width: 200px;
 }
 
 #playerInfo2 {
@@ -124,6 +125,7 @@ table tr td {
     font-family: monospace;
     padding: 10px;
     font-size: 25px;
+    width: 200px;
 }
 
 table tr td {
@@ -312,5 +314,5 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .cardXVERT {
-    background-image: url("images/xovert.png");
+    background-image: url("images/xvert.png");
 }

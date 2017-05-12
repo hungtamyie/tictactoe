@@ -38,3 +38,48 @@ function joinGame(id){
 function placeBet(){
     game.placeBet()
 }
+
+function checkWin(board, player){
+    var win;
+    for(var r = 0; r < 5; r++){
+        win = true;
+        for(var c = 0; c < 5; c++){
+            if(board[r][c] == null || (board[r][c].win != true || board[r][c].player != player)){
+                win = false;
+            }
+        }
+        if(win == true){
+            return true;
+        }
+    }
+    for(var c = 0; c < 5; c++){
+        win = true;
+        for(var r = 0; r < 5; r++){
+            if(board[r][c] == null || (board[r][c].win != true || board[r][c].player != player)){
+                win = false;
+            }
+        }
+        if(win == true){
+            return true;
+        }
+    }
+    win = true;
+    for(var i = 0; i < 5; i++){
+        if(board[i][i] == null || (board[i][i].win != true || board[i][i].player != player)){
+            win = false;
+        }
+    }
+    if(win == true){
+        return true;
+    }
+    
+    win = true;
+    for(var i = 0; i < 5; i++){
+        if(board[4-i][i] == null || (board[4-i][i].win != true || board[4-i][i].player != player)){
+            win = false;
+        }
+    }
+    if(win == true){
+        return true;
+    }
+}

@@ -22,6 +22,8 @@ Piece.prototype.update = function(){
 
 function StandardPieceX(r, c, drawSpecs){
     Piece.call(this, r, c, drawSpecs);
+    this.win = true;
+    this.player = "X"
 }
 
 StandardPieceX.prototype = new Piece();
@@ -29,6 +31,8 @@ StandardPieceX.prototype = new Piece();
 
 function StandardPieceO(r, c, drawSpecs){
     Piece.call(this, r, c, drawSpecs);
+    this.win = true;
+    this.player = "O"
 }
 
 StandardPieceO.prototype = new Piece();
@@ -330,7 +334,7 @@ DoubleO.prototype.animate = function(){
         ctx.drawImage(specs.img, 26 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
         var rid = uuidGen()
         this.selectedPieceId = rid;
-        if(game.myType = "O"){
+        if(game.myType === "O"){
             $("#cards" + game.myNumber).append('<div class="card' + (game.myType).toUpperCase()+ ' card" onclick="game.selectedPiece = \'' + (game.myType).toUpperCase() + '\'; game.selectedPieceId=\'' + rid + '\'" id="card' + rid + '"></div>')
         }
         this.hasAlreadyGiven = true;    
@@ -360,7 +364,7 @@ DoubleX.prototype.animate = function(){
         ctx.drawImage(specs.img, 26 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
         var rid = uuidGen()
         this.selectedPieceId = rid;
-        if(game.myType = "X"){
+        if(game.myType === "X"){
             $("#cards" + game.myNumber).append('<div class="card' + (game.myType).toUpperCase()+ ' card" onclick="game.selectedPiece = \'' + (game.myType).toUpperCase() + '\'; game.selectedPieceId=\'' + rid + '\'" id="card' + rid + '"></div>')
         }
         this.hasAlreadyGiven = true;    

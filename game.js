@@ -66,6 +66,7 @@ function Game(){
     this.myBet;
     this.enemyBet;
     this.myType = "X";
+    this.enemyType = "O";
     this.enemyMoney = 100;
     this.myMoney = 100;
     this.myNumber;
@@ -73,7 +74,7 @@ function Game(){
     this.turns = 0;
     this.animating = false;
     
-    (amX)? (this.myType = "X", this.myNumber = 1, this.enemyNumber = 2) : (this.myType = "O", this.myNumber = 2, this.enemyNumber = 1)
+    (amX)? (this.myType = "X", this.myNumber = 1, this.enemyType = "O", this.enemyNumber = 2) : (this.myType = "O", this.enemyType = "X", this.myNumber = 2, this.enemyNumber = 1)
     
     this.selectedPiece = "unknown";
     this.selectedPieceId = "unknown";
@@ -118,7 +119,8 @@ Game.prototype.mouseClicked = function(evt){
             game.animate()
             
             pubnubSendMove({type:"move", intype:"place", str: this.selectedPiece, r: y, c: x})
-            this.selectedPiece = "unknown"    
+            this.selectedPiece = "unknown"
+            game.checkWinCondition()
         }
     }
 }
@@ -182,7 +184,7 @@ Game.prototype.update = function(){
 
 Game.prototype.deletePiece = function(r,c){
     if(this.grid[r] && this.grid[r][c]){
-        this.grid[r][c] == null
+        this.grid[r][c] = null
         for(var i=0; i < this.pieces.length; i++){
             if(this.pieces[i].r == r && this.pieces[i].c == c){
                 this.pieces.splice(i,1)
@@ -208,6 +210,7 @@ Game.prototype.addCards = function(){
 Game.prototype.checkBetWinner = function(){
     document.getElementById("p" + this.myNumber + "bet").value = this.myBet
     document.getElementById("p" + this.enemyNumber + "bet").value = this.enemyBet
+    document.getElementById("placeBet" + game.myNumber).style.visibility = "hidden";
     this.haveRecievedEnemyBet = false
     this.havePlacedBet = false
     if(Number(this.myBet) > Number(this.enemyBet) || Number(this.myBet) === Number(this.enemyBet) && this.myType === "X"){
@@ -319,6 +322,7 @@ var moveReceived = function(move){
         game.add(piece)
         game.draw()
         game.animate()
+        game.checkWinCondition()
     }
     if(move.intype == "endTurn"){
         game.currentAction = "betting"
@@ -326,7 +330,7 @@ var moveReceived = function(move){
         document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
         document.getElementById("p" + game.enemyNumber + "bet").value = "?"
-        if(game.turns % 3 != 0 || game.turns === 0){
+        if((game.turns - 1) % 3 != 0 || game.turns === 0){
             document.getElementById("currentinfo").innerHTML = "Bidding Stage (Normal Piece)"
         }
         else {
@@ -350,7 +354,7 @@ function endTurn(){
         document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
         document.getElementById("p" + game.enemyNumber + "bet").value = "?"
-        if(game.turns % 3 != 0 || game.turns === 0){
+        if((game.turns - 1) % 3 != 0 || game.turns === 0){
             document.getElementById("currentinfo").innerHTML = "Bidding Stage (Normal Piece)"
         }
         else {
@@ -362,11 +366,23 @@ function endTurn(){
         game.changeMyMoney(5)
         game.changeEnemyMoney(5)
         game.update()
+        window.setTimeout(function(){game.draw()},500)
         game.turns--
     }
 }
 
-
+Game.prototype.checkWinCondition = function(){
+    if(checkWin(game.grid, game.myType)){
+        document.getElementById("gameLobby").style.zIndex = 10;
+        document.getElementById("loading").innerHTML = "You win!"
+        document.getElementById("game").style.zIndex = 0;
+    }
+    if(checkWin(game.grid, game.enemyType)){
+        document.getElementById("gameLobby").style.zIndex = 10;
+        document.getElementById("loading").innerHTML = enemyName + " Wins!"
+        document.getElementById("game").style.zIndex = 0;
+    }
+}
 
 var createPiece = function(str, r, c){
     if(str === "X"){
