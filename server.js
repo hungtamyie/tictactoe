@@ -17,10 +17,11 @@ pubnub.addListener({
         var msg = m.message; // The Payload
         
         if(msg.type == "channelCreate"){
-            openGames[msg.id] = {name: msg.gameName, player: msg.playerName, uuid: msg.id}
+            openGames[msg.id] = {name: msg.gameName, player: msg.playerName, uuid: msg.id, time: msg.timesent}
         }
         
         if(msg.type == "channelJoin" && msg.joinedid != myUUID && channelName == myChannel){
+            window.clearInterval(spamLobby)
             startGame(true, myName, msg.player)
         }
         if(msg.type == "channelJoin" && msg.joinedid != myUUID){
@@ -55,27 +56,30 @@ pubnub.subscribe({
     withPresence: true // also subscribe to presence instances.
 })
 
-
+var spamLobby;
 function pubnubCreateLobby(uuid, game, player){
-    pubnub.publish(
-        {
-            message: {
-                type: "channelCreate",
-                id: uuid,
-                gameName: game,
-                playerName: player
+   spamLobby = window.setInterval(function(){
+        pubnub.publish(
+            {
+                message: {
+                    type: "channelCreate",
+                    id: uuid,
+                    gameName: game,
+                    playerName: player,
+                    timesent: new Date().getTime() / 1000
+                },
+                channel: 'lobby',
+                sendByPost: false, // true to send via post
+                storeInHistory: false, //override default storage options
+                meta: {
+                    "cool": "meta"
+                } // publish extra meta with the request
             },
-            channel: 'lobby',
-            sendByPost: false, // true to send via post
-            storeInHistory: false, //override default storage options
-            meta: {
-                "cool": "meta"
-            } // publish extra meta with the request
-        },
-        function (status, response) {
-            // handle status, response
-        }
-    );    
+            function (status, response) {
+                // handle status, response
+            }
+        );   
+    },3000)
     
     pubnub.subscribe({
         channels: [uuid],
@@ -115,6 +119,7 @@ function pubnubJoinGame(id){
             // handle status, response
         }
     );
+    clearInterval(checkGames)
     pubnub.publish(
         {
             message: {
@@ -164,7 +169,20 @@ function pubnubSendMove(move){
 }
 
 
-
+var checkGames = window.setInterval(
+    function(){
+        for (var property in openGames) {
+            if (openGames.hasOwnProperty(property)) {
+                var seconds = new Date().getTime() / 1000 - openGames[property].time
+                if(seconds > 15){
+                    delete openGames[property]
+                    showGames()
+                    break
+                }
+            }
+        }
+    }
+,3000)
 
 
 

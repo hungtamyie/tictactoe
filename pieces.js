@@ -334,7 +334,7 @@ DoubleO.prototype.animate = function(){
         ctx.drawImage(specs.img, 26 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
         var rid = uuidGen()
         this.selectedPieceId = rid;
-        if(game.myType === "O"){
+        if(game.myType === "O" && game.currentWinner === "me"){
             $("#cards" + game.myNumber).append('<div class="card' + (game.myType).toUpperCase()+ ' card" onclick="game.selectedPiece = \'' + (game.myType).toUpperCase() + '\'; game.selectedPieceId=\'' + rid + '\'" id="card' + rid + '"></div>')
         }
         this.hasAlreadyGiven = true;    
@@ -364,7 +364,7 @@ DoubleX.prototype.animate = function(){
         ctx.drawImage(specs.img, 26 * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
         var rid = uuidGen()
         this.selectedPieceId = rid;
-        if(game.myType === "X"){
+        if(game.myType === "X" && game.currentWinner === "me"){
             $("#cards" + game.myNumber).append('<div class="card' + (game.myType).toUpperCase()+ ' card" onclick="game.selectedPiece = \'' + (game.myType).toUpperCase() + '\'; game.selectedPieceId=\'' + rid + '\'" id="card' + rid + '"></div>')
         }
         this.hasAlreadyGiven = true;    
@@ -590,10 +590,18 @@ HorizontalX.prototype.animate = function(){
 
 function GrabO(r, c, drawSpecs){
     Piece.call(this, r, c, drawSpecs);
+    this.type = "O";
     this.visible = false;
 }
 
 GrabO.prototype = new Piece();
+
+GrabO.prototype.draw = function(){
+    if(game.myType === "O"){
+        var specs = this.drawSpecs;
+        ctx.drawImage(specs.img, specs.sx * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
+    }
+}
 
 function GrabX(r, c, drawSpecs){
     Piece.call(this, r, c, drawSpecs);
@@ -601,6 +609,13 @@ function GrabX(r, c, drawSpecs){
 }
 
 GrabX.prototype = new Piece()
+
+GrabX.prototype.draw = function(){
+    if(game.myType === "X"){
+        var specs = this.drawSpecs;
+        ctx.drawImage(specs.img, specs.sx * specs.scale, specs.sy * specs.scale, specs.scale, specs.scale, this.x * 100, this.y * 100, specs.dw, specs.dh);
+    }
+}
 
 //------------------
 
@@ -621,7 +636,7 @@ NetX.prototype = new Piece()
 
 
 
-var allPieces = ["BOMB","DOUB","HOR","MONL","MONM","MONS","VERT"]
+var allPieces = ["BOMB","HOR","MONL","MONM","MONS","VERT"]
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }

@@ -122,6 +122,12 @@ Game.prototype.mouseClicked = function(evt){
             this.selectedPiece = "unknown"
             game.checkWinCondition()
         }
+        else if(game.grid[y][x].visible != undefined && game.grid[y][x].type != game.myType){
+            var piece = new createPiece(this.selectedPiece, y, x)
+            this.pieces.push(piece)
+            game.draw(0)
+            game.grid[y][x].activate(piece)
+        }
     }
 }
 
@@ -213,15 +219,17 @@ Game.prototype.checkBetWinner = function(){
     document.getElementById("placeBet" + game.myNumber).style.visibility = "hidden";
     this.haveRecievedEnemyBet = false
     this.havePlacedBet = false
-    if(Number(this.myBet) > Number(this.enemyBet) || Number(this.myBet) === Number(this.enemyBet) && this.myType === "X"){
+    if(Number(this.myBet) > Number(this.enemyBet)){
         game.changeMyMoney(-1 * game.myBet)
         if($("#cards" + this.myNumber).children().length >= 3){
              document.getElementById("currentinfo").innerHTML = "You've won this bid but run out of space."
              this.currentAction = "placingPiece"
              this.selectedPiece = "unknown"
              document.getElementById("endTurn").style.visibility = "visible";
+             this.currentWinner = "me"
         }
         else {
+            this.currentWinner = "me"
             document.getElementById("currentinfo").innerHTML = "You won this bid. Please play a piece."
             this.currentAction = "placingPiece"
             this.selectedPiece = "unknown"
@@ -229,10 +237,16 @@ Game.prototype.checkBetWinner = function(){
             document.getElementById("endTurn").style.visibility = "visible";
         }
     }
+    else if(Number(this.myBet) === Number(this.enemyBet)){
+        document.getElementById("currentinfo").innerHTML = "This bid was a tie."
+        game.currentAction = "tied"
+        window.setTimeout(function(){endTurn()},1000)
+    }
     else {
         game.changeEnemyMoney(-1 * game.enemyBet)
         document.getElementById("currentinfo").innerHTML = "You lost this bid. Waiting for other player to place his piece."
         this.currentAction = "waitingForPlacement"    
+        this.currentWinner = "enemy"
     }
     this.myBet = 0
     this.enemyBet = 0
@@ -326,6 +340,7 @@ var moveReceived = function(move){
     }
     if(move.intype == "endTurn"){
         game.currentAction = "betting"
+        game.currentWinner = "none"
         document.getElementById("endTurn").style.visibility = "hidden";
         document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
@@ -347,9 +362,10 @@ var moveReceived = function(move){
 }
 
 function endTurn(){
-    if(game.currentAction == "placingPiece"){
+    if(game.currentAction == "placingPiece" || game.currentAction == "tied"){
         pubnubSendMove({type: "move", intype: "endTurn"})
         game.currentAction = "betting"
+        game.currentWinner = "none"
         document.getElementById("endTurn").style.visibility = "hidden";
         document.getElementById("placeBet" + game.myNumber).style.visibility = "visible";
         document.getElementById("p" + game.myNumber + "bet").value = "0"
