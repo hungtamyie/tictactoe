@@ -122,12 +122,12 @@ Game.prototype.mouseClicked = function(evt){
             this.selectedPiece = "unknown"
             game.checkWinCondition()
         }
-        else if(game.grid[y][x].visible != undefined && game.grid[y][x].type != game.myType){
+        /*else if(game.grid[y][x].visible != undefined && game.grid[y][x].type != game.myType){
             var piece = new createPiece(this.selectedPiece, y, x)
             this.pieces.push(piece)
             game.draw(0)
             game.grid[y][x].activate(piece)
-        }
+        }*/
     }
 }
 
